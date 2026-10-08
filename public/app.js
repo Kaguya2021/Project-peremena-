@@ -1,9 +1,14 @@
+import { createMorph } from 'https://esm.sh/morphicons/dom';
+import { Sun, Moon } from 'https://esm.sh/lucide';
+
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const fmt = (d) => d.split('-').reverse().join('.');
 const longDate = () => new Date().toLocaleDateString('ru-RU', { day: '2-digit', month: 'long', year: 'numeric', timeZone: 'Asia/Bishkek' }).replace(/\s?г\.?$/, '');
 const NET = 'Не удалось подключиться к серверу.<br><br>Проверьте интернет-соединение<br>и попробуйте ещё раз.';
 const S = { view: 'home', lesson: null, dirty: new Set(), q: '', chain: Promise.resolve(), rid: null, back: 'history', rep: null, today: null, students: [] };
+
+let themeMorph = null;
 
 async function api(path, o = {}) {
   let res;
@@ -15,6 +20,7 @@ async function api(path, o = {}) {
   if (!res.ok) { if (res.status >= 500) throw { net: true }; throw { status: res.status, message: data && data.error, data }; }
   return data;
 }
+
 function toast(m, t = 'ok') {
   const e = document.createElement('div');
   e.className = 'toast ' + t; e.textContent = (t === 'ok' ? '✓ ' : '⚠️ ') + m;
@@ -34,8 +40,19 @@ function modal(title, body, btns) {
 const openSheet = (h) => { const s = $('#sheet'); s.innerHTML = `<div class="bd" data-act="close"></div><div class="pn"><i class="grab"></i>${h}</div>`; requestAnimationFrame(() => s.classList.add('open')); };
 const closeSheet = () => $('#sheet').classList.remove('open');
 
-// theme
-const setTheme = (t) => { document.documentElement.dataset.theme = t; localStorage.setItem('theme', t); $('#theme').textContent = t === 'dark' ? '☀️' : '🌙'; $('#theme').title = t === 'dark' ? 'Светлая тема' : 'Тёмная тема'; };
+// theme with MORPHICONS
+const setTheme = (t) => { 
+  document.documentElement.dataset.theme = t; 
+  localStorage.setItem('theme', t); 
+  const pathEl = $('#themePath');
+  if (pathEl) {
+    if (!themeMorph) {
+      themeMorph = createMorph(pathEl, t === 'dark' ? Sun : Moon);
+    } else {
+      themeMorph.morphTo(t === 'dark' ? Sun : Moon, 'snappy');
+    }
+  }
+};
 setTheme(localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light'));
 
 // counters
@@ -221,7 +238,10 @@ document.addEventListener('click', async (ev) => {
   const d = el.dataset, id = Number(d.id);
   try {
     switch (d.act) {
-      case 'theme': setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'); if (S.view === 'home') render(); break;
+      case 'theme': 
+        setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'); 
+        if (S.view === 'home') render(); 
+        break;
       case 'nav':
         if (d.v === 'lesson') { if (S.lesson) { S.view = 'lesson'; render(); } else newLesson(); } else go(d.v); break;
       case 'newLesson': newLesson(); break;
@@ -264,10 +284,12 @@ document.addEventListener('click', async (ev) => {
     }
   } catch (e) { if (e.status === 409) toast(e.message, 'err'); else fail(e); setSave('err'); if (!S.dirty.size) setSave('ok'); }
 });
+
 document.addEventListener('input', (e) => {
   if (e.target.id !== 'q') return;
   S.q = e.target.value; ({ lesson: paintList, history: paintHistory, students: paintStudents, stats: paintRank })[S.view]();
 });
+
 async function newLesson() {
   try {
     if (S.today && S.today.status === 'finished' && S.today.report_id) return openReport(S.today.report_id, 'home');
@@ -276,4 +298,5 @@ async function newLesson() {
     openLesson(l);
   } catch (e) { fail(e); }
 }
+
 render();
