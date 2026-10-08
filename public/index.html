@@ -10,7 +10,11 @@
 <body>
 <header class="top">
   <div><div class="brand">📍 PEREMENA</div><div class="sub">№104 ЖББ мектеби • 9-В класс</div></div>
-  <button class="icon" id="theme" data-act="theme" aria-label="Сменить тему">🌙</button>
+  <button class="icon" id="theme" data-act="theme" aria-label="Сменить тему">
+    <svg id="themeSvg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path id="themePath" />
+    </svg>
+  </button>
 </header>
 <main id="view"></main>
 <nav>
@@ -23,6 +27,6 @@
 <div id="sheet"></div>
 <div id="toasts"></div>
 <noscript>Для работы PEREMENA нужен JavaScript.</noscript>
-<script src="app.js"></script>
+<script type="module" src="app.js"></script>
 </body>
 </html>
