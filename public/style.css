@@ -7,12 +7,14 @@ button{cursor:pointer;border:0;background:none}
 .top{display:flex;justify-content:space-between;align-items:center;padding:calc(12px + env(safe-area-inset-top)) 18px 10px;max-width:640px;margin:auto}
 .brand{font-weight:800;font-size:22px;letter-spacing:.5px;background:linear-gradient(90deg,var(--ac),var(--ac2));-webkit-background-clip:text;background-clip:text;color:transparent}
 .sub{font-size:13px;color:var(--mut)}
-.icon{width:48px;height:48px;border-radius:50%;background:var(--card);box-shadow:var(--sh);font-size:21px}
+.icon{width:48px;height:48px;border-radius:50%;background:var(--card);box-shadow:var(--sh);display:flex;align-items:center;justify-content:center;color:var(--tx)}
+.icon svg{width:22px;height:22px;stroke:currentColor}
 main{max-width:640px;margin:auto;padding:6px 14px calc(110px + env(safe-area-inset-bottom))}
 nav{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:center;gap:2px;padding:6px 6px calc(6px + env(safe-area-inset-bottom));background:var(--card);border-top:1px solid var(--line);z-index:20}
-nav button{flex:1;max-width:120px;min-height:56px;border-radius:14px;font-size:11px;color:var(--mut);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transition:.2s}
-nav button i{font-style:normal;font-size:22px}
+nav button{flex:1;max-width:120px;min-height:56px;border-radius:14px;font-size:11px;color:var(--mut);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;transition:.2s}
+nav button svg{width:22px;height:22px;stroke:var(--mut);transition:transform .2s,stroke .2s}
 nav button.on{color:var(--ac);background:color-mix(in srgb,var(--ac) 12%,transparent);font-weight:700}
+nav button.on svg{stroke:var(--ac);transform:scale(1.1)}
 h2{margin:6px 0 2px;font-size:24px}
 p{margin:2px 0;color:var(--mut)}
 .card,.tile,.rep,.empty{background:var(--card);border-radius:var(--r);box-shadow:var(--sh)}
