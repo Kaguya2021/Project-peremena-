@@ -3,7 +3,18 @@
   "version": "1.0.0",
   "description": "PEREMENA — учёт посещаемости физкультуры, №104 ЖББ мектеби, 9-В",
   "main": "server/server.js",
-  "scripts": { "start": "node server/server.js", "dev": "node --watch server/server.js" },
-  "engines": { "node": ">=18" },
-  "dependencies": { "dotenv": "^16.4.5", "express": "^4.19.2", "pg": "^8.11.5" }
+  "scripts": { 
+    "start": "node server/server.js", 
+    "dev": "node --watch server/server.js" 
+  },
+  "engines": { 
+    "node": ">=18" 
+  },
+  "dependencies": { 
+    "dotenv": "^16.4.5", 
+    "express": "^4.19.2", 
+    "pg": "^8.11.5",
+    "lucide": "^0.452.0",
+    "morphicons": "^0.1.0"
+  }
 }
